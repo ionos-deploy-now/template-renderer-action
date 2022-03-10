@@ -17,8 +17,8 @@ inputs:
     description: 'Data to use for rendering templates as yaml or json objects'
     required: true
 outputs:
-  used_runtime_values:
-    description: 'Used runtime values to replace them with another template engine later'
+  runtime-placeholder-files:
+    description: 'Files containing runtime placeholders to process them with another template engine later'
 runs:
   using: 'docker'
   image: 'docker://ghcr.io/ionos-deploy-now/template-renderer:v1.0.0'
@@ -32,6 +32,6 @@ runs:
     - '--secrets'
     - ${{ inputs.secrets }}
     - '--runtime'
-    - '{"db": {"user": "$DB_USER", "password": "$DB_PASSWORD", "url": "$DB_URL"}}'
+    - '{"db": {"user": "@DB_USERNAME@", "password": "@DB_PASSWORD@", "host": "@DB_HOST@", "name": "@DB_NAME@"}, "app_url": "@APP_URL@"}'
     - '--copy-permissions'
-    - '--output-runtime'
+    - '--output-runtime-placeholder-files'
