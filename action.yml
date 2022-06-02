@@ -21,7 +21,7 @@ outputs:
     description: 'Files containing runtime placeholders to process them with another template engine later'
 runs:
   using: 'docker'
-  image: 'docker://ghcr.io/ionos-deploy-now/template-renderer:v1.0.1'
+  image: 'docker://ghcr.io/ionos-deploy-now/template-renderer:v1.1.0'
   args:
     - '--template-dir'
     - ${{ inputs.template-directory }}
