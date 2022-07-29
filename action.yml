@@ -1,37 +1,29 @@
 name: 'DeployNow template rendering'
-description: 'Fill templates of configuration files before deployment based on the golang template engine'
+description: 'Fill templates of configuration files before deployment'
 inputs:
-  template-directory:
+  deployment-id:
+    description: 'The id of the current deployment'
+    required: false
+  input-directory:
     description: 'The directory to search for template files'
-    required: false
-    default: '.deploy-now'
-  template-extension:
-    description: 'The file extension which identifies template files'
-    required: false
-    default: '.template'
+    required: true
   output-directory:
     description: 'The directory where the processed templates will be written to'
-    required: false
-    default: './'
-  secrets:
-    description: 'Data to use for rendering templates as yaml or json objects'
     required: true
-outputs:
-  runtime-placeholder-files:
-    description: 'Files containing runtime placeholders to process them with another template engine later'
+  intermediate-data-file:
+    description: 'A file used to store information about prepared templates when using this action in multiple steps'
+    required: false
+  template-extension:
+    description: 'The file extension which identifies template files'
+    required: true
+    default: '.template'
+  use-context-sensitive-references:
+    description: 'Use valid urls und port numbers for intermediate references when using this action in multiple steps'
+    required: true
+    default: 'true'
+  data:
+    description: 'Data to use for rendering templates as json objects'
+    required: false
 runs:
-  using: 'docker'
-  image: 'docker://ghcr.io/ionos-deploy-now/template-renderer:v1.1.1'
-  args:
-    - '--template-dir'
-    - ${{ inputs.template-directory }}
-    - '--template-extension'
-    - ${{ inputs.template-extension }}
-    - '--output-dir'
-    - ${{ inputs.output-directory }}
-    - '--secrets'
-    - ${{ inputs.secrets }}
-    - '--runtime'
-    - '{"db": {"user": "@DB_USERNAME@", "password": "@DB_PASSWORD@", "host": "@DB_HOST@", "name": "@DB_NAME@"}, "app_url": "@APP_URL@"}'
-    - '--copy-permissions'
-    - '--output-runtime-placeholder-files'
+  using: 'node16'
+  main: 'dist/index.js'
