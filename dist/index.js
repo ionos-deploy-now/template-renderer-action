@@ -10221,7 +10221,7 @@ var LiteralType;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.methods = void 0;
 exports.methods = {
-    urlEncoded: encodeURI,
+    urlEncoded: encodeURIComponent,
 };
 
 
