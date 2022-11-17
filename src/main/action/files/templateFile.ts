@@ -6,6 +6,9 @@ export class TemplateFile {
   constructor(readonly relativePath: string, readonly content: string, readonly metadata: FileMetadata) {}
 
   static open(basePath: string, relativePath: string, templateExtension: string): TemplateFile {
+    if (relativePath == templateExtension || relativePath.endsWith('/' + templateExtension)) {
+      throw new Error('Cannot open template file with empty name.')
+    }
     const filePath = path.join(basePath, relativePath);
     return new TemplateFile(
       relativePath.replace(templateExtension, ''),

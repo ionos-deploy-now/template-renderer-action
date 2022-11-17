@@ -23,7 +23,7 @@ export class Directory {
       const stats = fs.lstatSync(path.join(basePath, relativePath, file));
       if (stats.isDirectory()) {
         directories.push(this.open(basePath, path.join(relativePath, file), templateExtension));
-      } else if (stats.isFile() && file.endsWith(templateExtension)) {
+      } else if (stats.isFile() && file.endsWith(templateExtension) && file != templateExtension) {
         templateFiles.push(TemplateFile.open(basePath, path.join(relativePath, file), templateExtension));
       }
     });
