@@ -18,6 +18,7 @@ export default class Data extends Map<string, string> {
 
     Object.keys(inputData)
       .filter((key) => !key.toUpperCase().includes('IONOS_DEPLOYMENT_'))
+      .filter((key) => key != 'github_token')
       .forEach((key) => {
         if (!resultData.has(key.toUpperCase())) {
           resultData.set(key.toUpperCase(), inputData[key]);
