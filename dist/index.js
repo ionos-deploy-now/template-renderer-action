@@ -9702,7 +9702,7 @@ class Directory {
             if (stats.isDirectory()) {
                 directories.push(this.open(basePath, path_1.default.join(relativePath, file), templateExtension));
             }
-            else if (stats.isFile() && file.endsWith(templateExtension)) {
+            else if (stats.isFile() && file.endsWith(templateExtension) && file != templateExtension) {
                 templateFiles.push(templateFile_1.TemplateFile.open(basePath, path_1.default.join(relativePath, file), templateExtension));
             }
         });
@@ -9821,6 +9821,9 @@ class TemplateFile {
         this.metadata = metadata;
     }
     static open(basePath, relativePath, templateExtension) {
+        if (relativePath == templateExtension || relativePath.endsWith('/' + templateExtension)) {
+            throw new Error('Cannot open template file with empty name.');
+        }
         const filePath = path_1.default.join(basePath, relativePath);
         return new TemplateFile(relativePath.replace(templateExtension, ''), fs_1.default.readFileSync(filePath, { encoding: 'utf8', flag: 'r' }), fileMetadata_1.FileMetadata.of(fs_1.default.lstatSync(filePath)));
     }
@@ -9975,6 +9978,7 @@ class Data extends Map {
             .forEach((key) => resultData.set(key.toUpperCase().replace(deploymentPrefix, 'IONOS_'), inputData[key]));
         Object.keys(inputData)
             .filter((key) => !key.toUpperCase().includes('IONOS_DEPLOYMENT_'))
+            .filter((key) => key != 'github_token')
             .forEach((key) => {
             if (!resultData.has(key.toUpperCase())) {
                 resultData.set(key.toUpperCase(), inputData[key]);
@@ -10271,7 +10275,8 @@ class DefaultParser extends Parser {
 exports.DefaultParser = DefaultParser;
 class IntermediateParser extends Parser {
     constructor(references) {
-        super(new RegExp(references.map((value) => `(${value})`).join('|'), 'g'));
+        const regex = references.length < 1 ? '.^' : references.map((value) => `(${value})`).join('|');
+        super(new RegExp(regex, 'g'));
         this.references = references;
     }
     handleMatch(match) {
