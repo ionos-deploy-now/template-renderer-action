@@ -211,6 +211,31 @@ describe('Test main action function', () => {
     expect(references.some((reference) => reference.startsWith('https://'))).to.be.true;
     expect(references.some((reference) => !isNaN(Number(reference)))).to.be.true;
   });
+
+  it('Handle template without references', async () => {
+    fs.mkdirSync(tempDir + '/project-4/deployment', { recursive: true });
+    fs.cpSync(testDir + '/project-4/deployment', tempDir + '/project-4/deployment', { recursive: true });
+
+    withData(
+        new Map([
+                  ['IONOS_MAIL_USER', 'mail-user'],
+                  ['IONOS_MAIL_PASSWORD', 'mail-password'],
+                  ['IONOS_DB_USER', 'db-user'],
+                  ['IONOS_DB_PASSWORD', 'db-password'],
+                ])
+    );
+
+    await renderTemplates({
+                            deploymentId: '29ed115b-0e7e-4f27-89b0-50c6436d7d5e',
+                            inputDirectory: tempDir + '/project-4/deployment',
+                            intermediateDataFile: testDir + '/project-4/deployment/intermediate.json',
+                            outputDirectory: tempDir + '/project-4/deployment',
+                            templateExtension: '.template',
+                            useContextSensitiveReferences: true,
+                          });
+
+    expect(tempFile('project-4/deployment/.env')).to.equal('');
+  });
 });
 
 function withData(data: Map<string, string>) {

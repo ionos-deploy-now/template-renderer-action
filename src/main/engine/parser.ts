@@ -44,7 +44,8 @@ export class DefaultParser extends Parser {
 
 export class IntermediateParser extends Parser {
   constructor(private references: string[]) {
-    super(new RegExp(references.map((value) => `(${value})`).join('|'), 'g'));
+    const regex = references.length < 1 ? '.^' : references.map((value) => `(${value})`).join('|');
+    super(new RegExp(regex, 'g'));
   }
 
   handleMatch(match: string): Literal {
