@@ -9711,7 +9711,7 @@ class Directory {
     processTemplateFiles(renderAction, options) {
         if (options.copyDirectories) {
             const dirPath = path_1.default.join(options.outputDirectory, this.relativePath);
-            if (this.directories.length > 0 || (this.templateFiles.length > 0 && !fs_1.default.existsSync(dirPath))) {
+            if ((this.directories.length > 0 || this.templateFiles.length > 0) && !fs_1.default.existsSync(dirPath)) {
                 fs_1.default.mkdirSync(dirPath, { mode: this.metadata.mode, recursive: this.relativePath == '' });
                 fs_1.default.chownSync(dirPath, this.metadata.uid, this.metadata.gid);
             }
