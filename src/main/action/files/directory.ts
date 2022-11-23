@@ -38,7 +38,7 @@ export class Directory {
   processTemplateFiles(renderAction: (content: string) => string, options: ProcessingOptions): Directory {
     if (options.copyDirectories) {
       const dirPath = path.join(options.outputDirectory, this.relativePath);
-      if (this.directories.length > 0 || (this.templateFiles.length > 0 && !fs.existsSync(dirPath))) {
+      if ((this.directories.length > 0 || this.templateFiles.length > 0) && !fs.existsSync(dirPath)) {
         fs.mkdirSync(dirPath, { mode: this.metadata.mode, recursive: this.relativePath == '' });
         fs.chownSync(dirPath, this.metadata.uid, this.metadata.gid);
       }
