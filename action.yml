@@ -25,5 +25,5 @@ inputs:
     description: 'Data to use for rendering templates as json objects'
     required: false
 runs:
-  using: 'node16'
+  using: 'node20'
   main: 'dist/index.js'
