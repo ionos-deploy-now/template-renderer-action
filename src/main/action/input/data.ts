@@ -37,7 +37,7 @@ export default class Data extends Map<string, string> {
       return data;
     } catch (e) {
       throw new Error(
-        'Property "data" was not supplied properly. Please add "data: \'[ ${{ toJson(secrets) }}, ${{ steps.deployment.outputs.template-variables }} ]\'" to the "with" section of this action.'
+        'Property "data" was not supplied properly. Please add "data: \'[ ${{ toJson(secrets) }}, ${{ steps.deployment.outputs.template-variables }} ]\'" to the "with" section of this action.',
       );
     }
   }

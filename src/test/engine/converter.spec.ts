@@ -12,7 +12,7 @@ describe('Test processor without references for templating', () => {
       new Map<string, string>([
         ['A', '123'],
         ['B', 'Ä'],
-      ])
+      ]),
     );
     const convert = converters.replaceData(dataProvider);
 
@@ -20,7 +20,7 @@ describe('Test processor without references for templating', () => {
     expect(convert(new Literal('A', LiteralType.Variable))).to.deep.equal(new Literal('123', LiteralType.String));
     expect(convert(new Literal('\n2: ', LiteralType.String))).to.deep.equal(new Literal('\n2: ', LiteralType.String));
     expect(convert(new Literal('B.urlEncoded()', LiteralType.Expression))).to.deep.equal(
-      new Literal('%C3%84', LiteralType.String)
+      new Literal('%C3%84', LiteralType.String),
     );
   });
 
@@ -28,7 +28,7 @@ describe('Test processor without references for templating', () => {
     const convert = converters.replaceData(new DataProvider());
 
     expect(() => convert(new Literal(uuid.v4(), LiteralType.Reference))).to.throw(
-      'References are not supported in this mode. This should not happen, please contact the deploy-now team.'
+      'References are not supported in this mode. This should not happen, please contact the deploy-now team.',
     );
   });
 
@@ -62,7 +62,7 @@ describe('Test processor for template preparation', () => {
     const convert = converters.insertReferences(new ReferenceProvider(new Map<string, ReferenceValue>()));
 
     expect(() => convert(new Literal(uuid.v4(), LiteralType.Reference))).to.throw(
-      'References are not supported in this mode. This should not happen, please contact the deploy-now team.'
+      'References are not supported in this mode. This should not happen, please contact the deploy-now team.',
     );
   });
 });
@@ -76,24 +76,24 @@ describe('Test processor with references for templating', () => {
       new Map<string, ReferenceValue>([
         [reference1, { key: 'A' }],
         [reference2, { key: 'B' }],
-      ])
+      ]),
     );
     const dataProvider = new DataProvider(
       new Map<string, string>([
         ['A', '123'],
         ['B', '456'],
-      ])
+      ]),
     );
     const convert = (l: Literal) =>
       converters.replaceData(dataProvider)(converters.resolveReferences(referenceProvider)(l));
 
     expect(convert(new Literal('1: ', LiteralType.String))).to.deep.equal(new Literal('1: ', LiteralType.String));
     expect(convert(new Literal(reference1, LiteralType.Reference))).to.deep.equal(
-      new Literal('123', LiteralType.String)
+      new Literal('123', LiteralType.String),
     );
     expect(convert(new Literal('\n2: ', LiteralType.String))).to.deep.equal(new Literal('\n2: ', LiteralType.String));
     expect(convert(new Literal(reference2, LiteralType.Reference))).to.deep.equal(
-      new Literal('456', LiteralType.String)
+      new Literal('456', LiteralType.String),
     );
   });
 
@@ -105,7 +105,7 @@ describe('Test processor with references for templating', () => {
       new Map<string, string>([
         ['A', '123'],
         ['B', '456'],
-      ])
+      ]),
     );
     const convert = (l: Literal) =>
       converters.replaceData(dataProvider)(converters.resolveReferences(referenceProvider)(l));
@@ -114,7 +114,7 @@ describe('Test processor with references for templating', () => {
     expect(convert(new Literal('A', LiteralType.Variable))).to.deep.equal(new Literal('123', LiteralType.String));
     expect(convert(new Literal('\n2: ', LiteralType.String))).to.deep.equal(new Literal('\n2: ', LiteralType.String));
     expect(convert(new Literal(reference, LiteralType.Reference))).to.deep.equal(
-      new Literal('456', LiteralType.String)
+      new Literal('456', LiteralType.String),
     );
   });
 
@@ -126,13 +126,13 @@ describe('Test processor with references for templating', () => {
       new Map<string, string>([
         ['A', '123'],
         ['B', '456'],
-      ])
+      ]),
     );
     const convert = (l: Literal) =>
       converters.replaceData(dataProvider)(converters.resolveReferences(referenceProvider)(l));
 
     expect(() => convert(new Literal(reference, LiteralType.Reference))).to.throw(
-      `Could not resolve reference ${reference}. This should not happen, please contact the deploy-now team.`
+      `Could not resolve reference ${reference}. This should not happen, please contact the deploy-now team.`,
     );
   });
 
@@ -144,7 +144,7 @@ describe('Test processor with references for templating', () => {
       new Map<string, ReferenceValue>([
         [reference1, { key: 'A' }],
         [reference2, { key: 'B' }],
-      ])
+      ]),
     );
     const dataProvider = new DataProvider(new Map<string, string>([['A', '123']]));
     const convert = (l: Literal) =>
@@ -152,11 +152,11 @@ describe('Test processor with references for templating', () => {
 
     expect(convert(new Literal('1: ', LiteralType.String))).to.deep.equal(new Literal('1: ', LiteralType.String));
     expect(convert(new Literal(reference1, LiteralType.Reference))).to.deep.equal(
-      new Literal('123', LiteralType.String)
+      new Literal('123', LiteralType.String),
     );
     expect(convert(new Literal('\n2: ', LiteralType.String))).to.deep.equal(new Literal('\n2: ', LiteralType.String));
     expect(convert(new Literal(reference2, LiteralType.Reference))).to.deep.equal(
-      new Literal('$B', LiteralType.String)
+      new Literal('$B', LiteralType.String),
     );
   });
 });

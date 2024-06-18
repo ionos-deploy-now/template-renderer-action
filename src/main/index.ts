@@ -12,5 +12,5 @@ Action.run<Configuration, Record<string, never>>(
       intermediateDataFile: input.optional('intermediate-data-file'),
       templateExtension: input.required('template-extension'),
       useContextSensitiveReferences: input.required('use-context-sensitive-references') === 'true',
-    }
+    },
 );

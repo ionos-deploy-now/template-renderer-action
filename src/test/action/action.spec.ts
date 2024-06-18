@@ -38,7 +38,7 @@ describe('Test main action function', () => {
         ['IONOS_MAIL_PASSWORD', 'mail-password'],
         ['IONOS_DB_USER', 'db-user'],
         ['IONOS_DB_PASSWORD', 'db-password'],
-      ])
+      ]),
     );
 
     await renderTemplates({
@@ -58,7 +58,7 @@ describe('Test main action function', () => {
       '030662b7-d260-4c51-855f-19847ec9ac36',
       '14588eb2-e5e0-42a9-a4fd-7e9a5a0c435a',
       'caf2ba9d-de63-4b31-b3fa-7b69a5158988',
-      '9acd4997-c4b6-44fe-b7be-17f7d9e33881'
+      '9acd4997-c4b6-44fe-b7be-17f7d9e33881',
     );
 
     await renderTemplates({
@@ -84,7 +84,7 @@ describe('Test main action function', () => {
         ['IONOS_MAIL_PASSWORD', 'mail-password'],
         ['IONOS_DB_USER', 'db-user'],
         ['IONOS_DB_PASSWORD', 'db-password'],
-      ])
+      ]),
     );
 
     await renderTemplates({
@@ -104,7 +104,7 @@ describe('Test main action function', () => {
       '030662b7-d260-4c51-855f-19847ec9ac36',
       '14588eb2-e5e0-42a9-a4fd-7e9a5a0c435a',
       'caf2ba9d-de63-4b31-b3fa-7b69a5158988',
-      '9acd4997-c4b6-44fe-b7be-17f7d9e33881'
+      '9acd4997-c4b6-44fe-b7be-17f7d9e33881',
     );
 
     await renderTemplates({
@@ -148,7 +148,7 @@ describe('Test main action function', () => {
       templateExtension: '.template',
       useContextSensitiveReferences: true,
     }).should.be.rejectedWith(
-      'At least one of the input properties "data" and "intermediate-data-file" need to be supplied. Additionally you could supply a "deployment-id" to use deployment specific values'
+      'At least one of the input properties "data" and "intermediate-data-file" need to be supplied. Additionally you could supply a "deployment-id" to use deployment specific values',
     );
   });
 
@@ -163,7 +163,7 @@ describe('Test main action function', () => {
       templateExtension: '.template',
       useContextSensitiveReferences: true,
     }).should.be.rejectedWith(
-      '"input-directory" and "output-directory" should be the same when completing the templating'
+      '"input-directory" and "output-directory" should be the same when completing the templating',
     );
   });
 
@@ -222,7 +222,7 @@ describe('Test main action function', () => {
         ['IONOS_MAIL_PASSWORD', 'mail-password'],
         ['IONOS_DB_USER', 'db-user'],
         ['IONOS_DB_PASSWORD', 'db-password'],
-      ])
+      ]),
     );
 
     await renderTemplates({
@@ -252,7 +252,7 @@ function withFixedReferences(...references: string[]) {
   sinon.replace(
     referenceGenerator,
     'generateContextSensitiveReference',
-    () => reverseReferences.pop() || assert.fail('More references used than expected')
+    () => reverseReferences.pop() || assert.fail('More references used than expected'),
   );
 }
 

@@ -34,7 +34,7 @@ describe('Test data extraction from input', () => {
         ['IONOS_DB_PASSWORD', 'db-password'],
         ['IONOS_MAIL_USER', 'mail-user'],
         ['IONOS_MAIL_PASSWORD', 'mail-password'],
-      ])
+      ]),
     );
   });
 
@@ -42,7 +42,7 @@ describe('Test data extraction from input', () => {
     getInput.returns('');
 
     expect(() => Data.fromInput('ff3f20ab-5cd4-49c8-8424-fef76d766229')).to.throw(
-      'Property "data" was not supplied properly. Please add "data: \'[ ${{ toJson(secrets) }}, ${{ steps.deployment.outputs.template-variables }} ]\'" to the "with" section of this action.'
+      'Property "data" was not supplied properly. Please add "data: \'[ ${{ toJson(secrets) }}, ${{ steps.deployment.outputs.template-variables }} ]\'" to the "with" section of this action.',
     );
   });
 
@@ -62,7 +62,7 @@ describe('Test data extraction from input', () => {
       new Map<string, string>([
         ['IONOS_MAIL_USER', 'mail-user'],
         ['IONOS_MAIL_PASSWORD', 'mail-password'],
-      ])
+      ]),
     );
   });
 
@@ -84,7 +84,7 @@ describe('Test data extraction from input', () => {
         ['IONOS_DB_PASSWORD', 'db-password'],
         ['IONOS_MAIL_USER', 'mail-user'],
         ['IONOS_MAIL_PASSWORD', 'mail-password'],
-      ])
+      ]),
     );
   });
 
@@ -110,7 +110,7 @@ describe('Test data extraction from input', () => {
         ['IONOS_MAIL_USER', 'mail-user'],
         ['IONOS_MAIL_PASSWORD', 'mail-password'],
         ['APP_URL', 'app-url'],
-      ])
+      ]),
     );
   });
 });

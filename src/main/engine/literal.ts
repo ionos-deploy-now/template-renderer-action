@@ -1,5 +1,8 @@
 export class Literal {
-  constructor(readonly value: string, readonly type: LiteralType) {}
+  constructor(
+    readonly value: string,
+    readonly type: LiteralType,
+  ) {}
 }
 
 export enum LiteralType {

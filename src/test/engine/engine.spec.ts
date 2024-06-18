@@ -14,12 +14,12 @@ describe('Test template engine', () => {
         ['A', '123'],
         ['B', '456'],
         ['C', 'Ä'],
-      ])
+      ]),
     );
     const engine = new TemplateEngine(referenceProvider, dataProvider);
 
     expect(
-      engine.newRenderer().parse('default').steps('replaceData').render('1: $A\n2: ${B}\n3: ${C.urlEncoded()}\n4: $D')
+      engine.newRenderer().parse('default').steps('replaceData').render('1: $A\n2: ${B}\n3: ${C.urlEncoded()}\n4: $D'),
     ).to.equal('1: 123\n2: 456\n3: %C3%84\n4: $D');
   });
 
@@ -33,14 +33,14 @@ describe('Test template engine', () => {
     const engine = new TemplateEngine(referenceProvider, new DataProvider());
 
     expect(engine.newRenderer().parse('default').steps('insertReferences').render('1: $A\n2: $B\n3: $C')).to.equal(
-      `1: ${reference1}\n2: ${reference2}\n3: ${reference3}`
+      `1: ${reference1}\n2: ${reference2}\n3: ${reference3}`,
     );
     expect(referenceProvider.knownReferences).to.deep.equal(
       new Map<string, ReferenceValue>([
         [reference1, { key: 'A' }],
         [reference2, { key: 'B' }],
         [reference3, { key: 'C' }],
-      ])
+      ]),
     );
   });
 
@@ -54,13 +54,13 @@ describe('Test template engine', () => {
         [reference1, { key: 'A' }],
         [reference2, { key: 'B' }],
         [reference3, { key: 'C' }],
-      ])
+      ]),
     );
     const dataProvider = new DataProvider(
       new Map<string, string>([
         ['A', '123'],
         ['B', '456'],
-      ])
+      ]),
     );
     const engine = new TemplateEngine(referenceProvider, dataProvider);
 
@@ -69,14 +69,14 @@ describe('Test template engine', () => {
         .newRenderer()
         .parse('references')
         .steps('resolveReferences', 'replaceData')
-        .render(`1: ${reference1}\n2: ${reference2}\n3: ${reference3}`)
+        .render(`1: ${reference1}\n2: ${reference2}\n3: ${reference3}`),
     ).to.equal('1: 123\n2: 456\n3: $C');
     expect(referenceProvider.knownReferences).to.deep.equal(
       new Map<string, ReferenceValue>([
         [reference1, { key: 'A' }],
         [reference2, { key: 'B' }],
         [reference3, { key: 'C' }],
-      ])
+      ]),
     );
   });
 });

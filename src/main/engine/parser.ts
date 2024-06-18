@@ -25,8 +25,8 @@ export class DefaultParser extends Parser {
     super(
       new RegExp(
         '([$][A-Za-z_][A-Za-z0-9_]*)|([$][{] *[A-Za-z_][A-Za-z0-9_]*([.][A-Za-z_][A-Za-z0-9_]*[(][)])? *[}])',
-        'g'
-      )
+        'g',
+      ),
     );
   }
 

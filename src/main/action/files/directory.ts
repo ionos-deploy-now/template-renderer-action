@@ -8,7 +8,7 @@ export class Directory {
     readonly relativePath: string,
     readonly directories: Directory[],
     readonly templateFiles: TemplateFile[],
-    readonly metadata: FileMetadata
+    readonly metadata: FileMetadata,
   ) {}
 
   static openFromRepo(basePath: string, templateExtension: string): Directory {
@@ -31,7 +31,7 @@ export class Directory {
       relativePath,
       directories,
       templateFiles,
-      FileMetadata.of(fs.lstatSync(path.join(basePath, relativePath)))
+      FileMetadata.of(fs.lstatSync(path.join(basePath, relativePath))),
     );
   }
 

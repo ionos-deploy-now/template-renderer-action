@@ -15,7 +15,7 @@ const insertReferences = (referenceProvider: ReferenceProvider) => (literal) => 
       return new Literal(referenceProvider.createExpressionReference(literal.value), LiteralType.String);
     case LiteralType.Reference:
       throw new Error(
-        'References are not supported in this mode. This should not happen, please contact the deploy-now team.'
+        'References are not supported in this mode. This should not happen, please contact the deploy-now team.',
       );
   }
 };
@@ -30,7 +30,7 @@ const resolveReferences = (referenceProvider: ReferenceProvider) => (literal) =>
       return new Literal(referenceValue.expression, LiteralType.Expression);
     }
     throw new Error(
-      `Could not resolve reference ${literal.value}. This should not happen, please contact the deploy-now team.`
+      `Could not resolve reference ${literal.value}. This should not happen, please contact the deploy-now team.`,
     );
   }
   return literal;
@@ -46,7 +46,7 @@ const replaceData = (dataProvider: DataProvider) => (literal) => {
       return new Literal(evaluateExpression(literal.value, dataProvider), LiteralType.String);
     case LiteralType.Reference:
       throw new Error(
-        'References are not supported in this mode. This should not happen, please contact the deploy-now team.'
+        'References are not supported in this mode. This should not happen, please contact the deploy-now team.',
       );
   }
 };

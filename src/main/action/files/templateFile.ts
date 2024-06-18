@@ -3,7 +3,11 @@ import fs from 'fs';
 import path from 'path';
 
 export class TemplateFile {
-  constructor(readonly relativePath: string, readonly content: string, readonly metadata: FileMetadata) {}
+  constructor(
+    readonly relativePath: string,
+    readonly content: string,
+    readonly metadata: FileMetadata,
+  ) {}
 
   static open(basePath: string, relativePath: string, templateExtension: string): TemplateFile {
     if (relativePath == templateExtension || relativePath.endsWith('/' + templateExtension)) {
@@ -13,7 +17,7 @@ export class TemplateFile {
     return new TemplateFile(
       relativePath.replace(templateExtension, ''),
       fs.readFileSync(filePath, { encoding: 'utf8', flag: 'r' }),
-      FileMetadata.of(fs.lstatSync(filePath))
+      FileMetadata.of(fs.lstatSync(filePath)),
     );
   }
 
@@ -23,7 +27,11 @@ export class TemplateFile {
 }
 
 export class RenderedTemplateFile {
-  constructor(readonly relativePath: string, readonly content: string, readonly metadata: FileMetadata) {}
+  constructor(
+    readonly relativePath: string,
+    readonly content: string,
+    readonly metadata: FileMetadata,
+  ) {}
 
   updateFile(basePath: string) {
     fs.writeFileSync(path.join(basePath, this.relativePath), this.content);

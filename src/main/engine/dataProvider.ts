@@ -1,7 +1,7 @@
 export default class DataProvider {
   constructor(
     private readonly data: Map<string, string> | undefined = undefined,
-    private readonly defaultAction: (key: string) => string = (key) => '$' + key
+    private readonly defaultAction: (key: string) => string = (key) => '$' + key,
   ) {}
 
   has(key: string): boolean {

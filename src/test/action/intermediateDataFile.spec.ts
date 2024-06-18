@@ -96,7 +96,7 @@ describe('Test interactions with intermediate data file', () => {
         ['b486c8a2-501f-48b5-b1bf-2c3c75ccaf87', { key: 'ABC' }],
         ['https://ff3f20ab-5cd4-49c8-8424-fef76d766229', { key: 'BCD' }],
         ['50000', { key: 'CDE' }],
-      ])
+      ]),
     );
   });
 });

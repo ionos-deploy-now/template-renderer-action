@@ -6,7 +6,7 @@ export default class ReferenceProvider {
 
   constructor(
     readonly existingReferences: Map<string, ReferenceValue>,
-    private keySupplier: (originalValue: string) => string = uuid.v4()
+    private keySupplier: (originalValue: string) => string = uuid.v4(),
   ) {}
 
   createKeyReference(value: string): string {

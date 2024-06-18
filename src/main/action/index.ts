@@ -14,7 +14,7 @@ export async function renderTemplates(configuration: Configuration): Promise<Rec
   const intermediateDataFile = IntermediateDataFile.readOrDefault(configuration.intermediateDataFile);
   const referenceProvider = new ReferenceProvider(
     intermediateDataFile.getReferencesMap(),
-    configuration.useContextSensitiveReferences ? generateContextSensitiveReference : undefined
+    configuration.useContextSensitiveReferences ? generateContextSensitiveReference : undefined,
   );
   const dataProvider = new DataProvider(isDataSet ? Data.fromInput(configuration.deploymentId) : undefined);
   const templateEngine = new TemplateEngine(referenceProvider, dataProvider);
@@ -30,7 +30,7 @@ export async function renderTemplates(configuration: Configuration): Promise<Rec
       insertReferences(configuration, templateEngine, referenceProvider);
     } else {
       throw new Error(
-        'At least one of the input properties "data" and "intermediate-data-file" need to be supplied. Additionally you could supply a "deployment-id" to use deployment specific values'
+        'At least one of the input properties "data" and "intermediate-data-file" need to be supplied. Additionally you could supply a "deployment-id" to use deployment specific values',
       );
     }
   }
@@ -39,7 +39,7 @@ export async function renderTemplates(configuration: Configuration): Promise<Rec
 
 function renderWithoutReferences(
   { inputDirectory, templateExtension, outputDirectory }: Configuration,
-  templateEngine: TemplateEngine
+  templateEngine: TemplateEngine,
 ) {
   const renderer = templateEngine.newRenderer().parse('default').steps('replaceData').render;
 
@@ -53,7 +53,7 @@ function renderWithoutReferences(
 function renderWithReferences(
   { inputDirectory, outputDirectory, templateExtension }: Configuration,
   templateEngine: TemplateEngine,
-  intermediateDataFile: IntermediateDataFile
+  intermediateDataFile: IntermediateDataFile,
 ) {
   if (inputDirectory !== outputDirectory) {
     throw new Error('"input-directory" and "output-directory" should be the same when completing the templating');
@@ -62,14 +62,14 @@ function renderWithReferences(
   const renderer = templateEngine.newRenderer().parse('references').steps('resolveReferences', 'replaceData').render;
 
   intermediateDataFile.forEachCreatedFile((filePath) =>
-    TemplateFile.open(inputDirectory, filePath, templateExtension).renderWith(renderer).updateFile(outputDirectory)
+    TemplateFile.open(inputDirectory, filePath, templateExtension).renderWith(renderer).updateFile(outputDirectory),
   );
 }
 
 function insertReferences(
   { inputDirectory, outputDirectory, templateExtension, intermediateDataFile }: Required<Configuration>,
   templateEngine: TemplateEngine,
-  referenceProvider: ReferenceProvider
+  referenceProvider: ReferenceProvider,
 ) {
   const renderer = templateEngine.newRenderer().parse('default').steps('insertReferences').render;
 

@@ -8,7 +8,10 @@ export default class TemplateEngine {
   private readonly parserModes: Record<'default' | 'references', Parser>;
   private readonly converters: Record<'resolveReferences' | 'insertReferences' | 'replaceData', Converter>;
 
-  constructor(referenceProvider: ReferenceProvider, private dataProvider: DataProvider) {
+  constructor(
+    referenceProvider: ReferenceProvider,
+    private dataProvider: DataProvider,
+  ) {
     this.parserModes = {
       default: new DefaultParser(),
       references: new IntermediateParser([...referenceProvider.knownReferences.keys()]),
@@ -30,7 +33,7 @@ export default class TemplateEngine {
             const result = parser.parse(content).map((value) => steps.reduce((literal, step) => step(literal), value));
             if (result.some((value) => value.type != LiteralType.String)) {
               throw new Error(
-                'Not all literals were converted during rendering. This should not happen, please contact the deploy-now team.'
+                'Not all literals were converted during rendering. This should not happen, please contact the deploy-now team.',
               );
             }
             return result.map((value) => value.value).join('');
