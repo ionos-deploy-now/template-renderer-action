@@ -4,8 +4,6 @@ import chia, { expect, assert } from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import Data from '../../main/action/input/data';
 import fs from 'fs';
-import * as core from '@actions/core';
-import * as referenceGenerator from '../../main/action/referenceGenerator';
 import { renderTemplates } from '../../main/action';
 
 const testDir = './src/test/action/resources';
@@ -28,6 +26,7 @@ describe('Test main action function', () => {
 
   afterEach(() => {
     fs.rmSync(tempDir, { recursive: true });
+    delete process.env['INPUT_DATA'];
     sinon.restore();
   });
 
@@ -54,21 +53,22 @@ describe('Test main action function', () => {
   });
 
   it('Prepare for second step', async () => {
-    withFixedReferences(
-      '030662b7-d260-4c51-855f-19847ec9ac36',
-      '14588eb2-e5e0-42a9-a4fd-7e9a5a0c435a',
-      'caf2ba9d-de63-4b31-b3fa-7b69a5158988',
-      '9acd4997-c4b6-44fe-b7be-17f7d9e33881',
+    await renderTemplates(
+      {
+        deploymentId: null,
+        inputDirectory: testDir + '/project-1/.deploy-now',
+        intermediateDataFile: tempDir + '/project-1/intermediate.json',
+        outputDirectory: tempDir + '/project-1/deployment',
+        templateExtension: '.template',
+        useContextSensitiveReferences: true,
+      },
+      withFixedReferences(
+        '030662b7-d260-4c51-855f-19847ec9ac36',
+        '14588eb2-e5e0-42a9-a4fd-7e9a5a0c435a',
+        'caf2ba9d-de63-4b31-b3fa-7b69a5158988',
+        '9acd4997-c4b6-44fe-b7be-17f7d9e33881',
+      ),
     );
-
-    await renderTemplates({
-      deploymentId: null,
-      inputDirectory: testDir + '/project-1/.deploy-now',
-      intermediateDataFile: tempDir + '/project-1/intermediate.json',
-      outputDirectory: tempDir + '/project-1/deployment',
-      templateExtension: '.template',
-      useContextSensitiveReferences: true,
-    });
 
     expect(tempFile('project-1/deployment/.env')).to.equal(testFile('result-2/.env'));
     expect(tempFile('project-1/intermediate.json')).to.equal(testFile('result-2/intermediate.json'));
@@ -100,21 +100,22 @@ describe('Test main action function', () => {
   });
 
   it('Test prepare and complete', async () => {
-    withFixedReferences(
-      '030662b7-d260-4c51-855f-19847ec9ac36',
-      '14588eb2-e5e0-42a9-a4fd-7e9a5a0c435a',
-      'caf2ba9d-de63-4b31-b3fa-7b69a5158988',
-      '9acd4997-c4b6-44fe-b7be-17f7d9e33881',
+    await renderTemplates(
+      {
+        deploymentId: null,
+        inputDirectory: testDir + '/project-1/.deploy-now',
+        intermediateDataFile: tempDir + '/project-1/intermediate.json',
+        outputDirectory: tempDir + '/project-1/deployment',
+        templateExtension: '.template',
+        useContextSensitiveReferences: true,
+      },
+      withFixedReferences(
+        '030662b7-d260-4c51-855f-19847ec9ac36',
+        '14588eb2-e5e0-42a9-a4fd-7e9a5a0c435a',
+        'caf2ba9d-de63-4b31-b3fa-7b69a5158988',
+        '9acd4997-c4b6-44fe-b7be-17f7d9e33881',
+      ),
     );
-
-    await renderTemplates({
-      deploymentId: null,
-      inputDirectory: testDir + '/project-1/.deploy-now',
-      intermediateDataFile: tempDir + '/project-1/intermediate.json',
-      outputDirectory: tempDir + '/project-1/deployment',
-      templateExtension: '.template',
-      useContextSensitiveReferences: true,
-    });
 
     expect(tempFile('project-1/intermediate.json')).to.equal(testFile('result-2/intermediate.json'));
 
@@ -244,16 +245,12 @@ function withData(data: Map<string, string>) {
 }
 
 function withDataInput(data: { [key: string]: string }) {
-  sinon.replace(core, 'getInput', sinon.stub().withArgs('data').returns(JSON.stringify(data)));
+  process.env['INPUT_DATA'] = JSON.stringify(data);
 }
 
-function withFixedReferences(...references: string[]) {
-  const reverseReferences = references.reverse();
-  sinon.replace(
-    referenceGenerator,
-    'generateContextSensitiveReference',
-    () => reverseReferences.pop() || assert.fail('More references used than expected'),
-  );
+function withFixedReferences(...references: string[]): () => string {
+  const queue = [...references];
+  return () => queue.shift() ?? assert.fail('More references used than expected');
 }
 
 function testFile(path: string): string {

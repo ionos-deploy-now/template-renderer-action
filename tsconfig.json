@@ -11,6 +11,7 @@
     "esModuleInterop": true,
     "declaration": false,
     "sourceMap": true,
+    "skipLibCheck": true,
     "lib": ["es2020", "dom"]
   },
   "exclude": ["node_modules", "**/*.spec.ts"]

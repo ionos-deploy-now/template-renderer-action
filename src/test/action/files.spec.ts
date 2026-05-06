@@ -33,10 +33,10 @@ describe('Test file and directory handling', () => {
     readdirSync.withArgs('config/subFolder').returns(['config.yaml.template']);
     readFileSync.withArgs('config/.env.template').returns('Template');
     readFileSync.withArgs('config/subFolder/config.yaml.template').returns('Template');
-    lstatSync.withArgs('config').returns(new DirectoryStats());
-    lstatSync.withArgs('config/subFolder').returns(new DirectoryStats());
-    lstatSync.withArgs('config/.env.template').returns(new FileStats());
-    lstatSync.withArgs('config/subFolder/config.yaml.template').returns(new FileStats());
+    lstatSync.withArgs('config').returns(DirectoryStats());
+    lstatSync.withArgs('config/subFolder').returns(DirectoryStats());
+    lstatSync.withArgs('config/.env.template').returns(FileStats());
+    lstatSync.withArgs('config/subFolder/config.yaml.template').returns(FileStats());
 
     const directory = Directory.openFromRepo('config', '.template');
 
@@ -62,12 +62,12 @@ describe('Test file and directory handling', () => {
     readdirSync.withArgs('config/subFolder2').returns(['config.yaml.template']);
     readFileSync.withArgs('config/.env.template').returns('Template');
     readFileSync.withArgs('config/subFolder2/config.yaml.template').returns('Template');
-    lstatSync.withArgs('config').returns(new DirectoryStats());
-    lstatSync.withArgs('config/subFolder1').returns(new DirectoryStats());
-    lstatSync.withArgs('config/subFolder2').returns(new DirectoryStats());
-    lstatSync.withArgs('config/.env.template').returns(new FileStats());
-    lstatSync.withArgs('config/subFolder1/config.yaml').returns(new FileStats());
-    lstatSync.withArgs('config/subFolder2/config.yaml.template').returns(new FileStats());
+    lstatSync.withArgs('config').returns(DirectoryStats());
+    lstatSync.withArgs('config/subFolder1').returns(DirectoryStats());
+    lstatSync.withArgs('config/subFolder2').returns(DirectoryStats());
+    lstatSync.withArgs('config/.env.template').returns(FileStats());
+    lstatSync.withArgs('config/subFolder1/config.yaml').returns(FileStats());
+    lstatSync.withArgs('config/subFolder2/config.yaml.template').returns(FileStats());
     existsSync.withArgs('out').returns(false);
     existsSync.withArgs('out/subFolder1').returns(false);
     existsSync.withArgs('out/subFolder2').returns(false);
@@ -92,12 +92,12 @@ describe('Test file and directory handling', () => {
     readdirSync.withArgs('config/subFolder2').returns(['config.yaml.template']);
     readFileSync.withArgs('config/.env.template').returns('Template');
     readFileSync.withArgs('config/subFolder2/config.yaml.template').returns('Template');
-    lstatSync.withArgs('config').returns(new DirectoryStats());
-    lstatSync.withArgs('config/subFolder1').returns(new DirectoryStats());
-    lstatSync.withArgs('config/subFolder2').returns(new DirectoryStats());
-    lstatSync.withArgs('config/.env.template').returns(new FileStats());
-    lstatSync.withArgs('config/subFolder1/config.yaml').returns(new FileStats());
-    lstatSync.withArgs('config/subFolder2/config.yaml.template').returns(new FileStats());
+    lstatSync.withArgs('config').returns(DirectoryStats());
+    lstatSync.withArgs('config/subFolder1').returns(DirectoryStats());
+    lstatSync.withArgs('config/subFolder2').returns(DirectoryStats());
+    lstatSync.withArgs('config/.env.template').returns(FileStats());
+    lstatSync.withArgs('config/subFolder1/config.yaml').returns(FileStats());
+    lstatSync.withArgs('config/subFolder2/config.yaml.template').returns(FileStats());
 
     Directory.openFromRepo('config', '.template').processTemplateFiles((content) => 'Rendered ' + content, {
       outputDirectory: 'out',
@@ -119,12 +119,12 @@ describe('Test file and directory handling', () => {
     readdirSync.withArgs('config/subFolder2').returns(['config.yaml.template']);
     readFileSync.withArgs('config/.env.template').returns('Template');
     readFileSync.withArgs('config/subFolder2/config.yaml.template').returns('Template');
-    lstatSync.withArgs('config').returns(new DirectoryStats());
-    lstatSync.withArgs('config/subFolder1').returns(new DirectoryStats());
-    lstatSync.withArgs('config/subFolder2').returns(new DirectoryStats());
-    lstatSync.withArgs('config/.env.template').returns(new FileStats());
-    lstatSync.withArgs('config/subFolder1/config.yaml').returns(new FileStats());
-    lstatSync.withArgs('config/subFolder2/config.yaml.template').returns(new FileStats());
+    lstatSync.withArgs('config').returns(DirectoryStats());
+    lstatSync.withArgs('config/subFolder1').returns(DirectoryStats());
+    lstatSync.withArgs('config/subFolder2').returns(DirectoryStats());
+    lstatSync.withArgs('config/.env.template').returns(FileStats());
+    lstatSync.withArgs('config/subFolder1/config.yaml').returns(FileStats());
+    lstatSync.withArgs('config/subFolder2/config.yaml.template').returns(FileStats());
 
     Directory.openFromRepo('config', '.template').processTemplateFiles((content) => 'Rendered ' + content, {
       outputDirectory: 'out',
@@ -138,36 +138,10 @@ describe('Test file and directory handling', () => {
   });
 });
 
-class DirectoryStats extends fs.Stats {
-  constructor() {
-    super();
-    this.mode = 0;
-    this.gid = 0;
-    this.uid = 0;
-  }
-
-  override isDirectory(): boolean {
-    return true;
-  }
-
-  override isFile(): boolean {
-    return false;
-  }
+function DirectoryStats(): fs.Stats {
+  return { mode: 0, gid: 0, uid: 0, isDirectory: () => true, isFile: () => false } as unknown as fs.Stats;
 }
 
-class FileStats extends fs.Stats {
-  constructor() {
-    super();
-    this.mode = 0;
-    this.gid = 0;
-    this.uid = 0;
-  }
-
-  override isDirectory(): boolean {
-    return false;
-  }
-
-  override isFile(): boolean {
-    return true;
-  }
+function FileStats(): fs.Stats {
+  return { mode: 0, gid: 0, uid: 0, isDirectory: () => false, isFile: () => true } as unknown as fs.Stats;
 }

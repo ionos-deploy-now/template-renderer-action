@@ -49,7 +49,7 @@ describe('Test processor for template preparation', () => {
     const reference2 = uuid.v4();
     const references = [reference2, reference1];
 
-    const referenceProvider = new ReferenceProvider(new Map<string, ReferenceValue>(), () => references.pop());
+    const referenceProvider = new ReferenceProvider(new Map<string, ReferenceValue>(), () => references.pop()!);
     const convert = converters.insertReferences(referenceProvider);
 
     expect(convert(new Literal('1: ', LiteralType.String))).to.deep.equal(new Literal('1: ', LiteralType.String));

@@ -1,37 +1,36 @@
 {
   "name": "action",
-  "version": "2.2.0-beta1",
+  "version": "2.2.0-beta2",
   "scripts": {
-    "lint": "eslint src --ext .ts --max-warnings=0",
-    "lint:fix": "eslint src --ext .ts --max-warnings=0 --fix",
-    "test": "mocha --require ts-node/register src/test/**/*.spec.ts",
+    "lint": "eslint src --max-warnings=0",
+    "lint:fix": "eslint src --max-warnings=0 --fix",
+    "test": "node --import tsx node_modules/mocha/bin/mocha.js src/test/**/*.spec.ts",
     "build": "tsc",
-    "release": "ncc build src/main/index.ts"
+    "release": "esbuild src/main/index.ts --bundle --platform=node --target=node24 --outfile=dist/index.js --conditions=import"
   },
   "dependencies": {
-    "@actions/core": "1.10.1",
-    "@actions/github": "6.0.0",
-    "@ionos-deploy-now/actions-core": "1.1.0",
-    "uuid": "10.0.0"
+    "@actions/core": "^2.0.0",
+    "@actions/github": "^9.0.0",
+    "@ionos-deploy-now/actions-core": "^1.2.2",
+    "uuid": "^13.0.1"
   },
   "devDependencies": {
-    "@ionos-deploy-now/eslint-config-actions": "^1.1.0",
+    "@ionos-deploy-now/eslint-config-actions": "1.2.0-beta",
     "@ionos-deploy-now/prettier-config-actions": "^1.1.0",
     "@types/chai": "^4.3.16",
     "@types/chai-as-promised": "^7.1.8",
     "@types/mocha": "^10.0.6",
-    "@types/node": "20.14.2",
+    "@types/node": "^24.0.0",
     "@types/sinon": "^17.0.3",
-    "@vercel/ncc": "0.38.1",
     "chai": "^4.3.6",
     "chai-as-promised": "^7.1.1",
-    "mocha": "^10.0.0",
+    "esbuild": "^0.28.1",
+    "mocha": "^12.0.0-beta-9.3",
     "sinon": "^18.0.0",
-    "ts-node": "^10.9.2",
-    "ts-sinon": "^2.0.2",
-    "typescript": "5.4.5"
+    "tsx": "^4.0.0",
+    "typescript": "^5.8.0"
   },
   "engines": {
-    "node": "20.x"
+    "node": "24.x"
   }
 }

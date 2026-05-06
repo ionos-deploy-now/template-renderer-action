@@ -8,13 +8,16 @@ import { generateContextSensitiveReference } from './referenceGenerator';
 import ReferenceProvider from '../engine/referenceProvider';
 import DataProvider from '../engine/dataProvider';
 
-export async function renderTemplates(configuration: Configuration): Promise<Record<string, never>> {
+export async function renderTemplates(
+  configuration: Configuration,
+  referenceGeneratorFn: (value: string) => string = generateContextSensitiveReference,
+): Promise<Record<string, never>> {
   const isDataSet = Data.isSet();
   const isIntermediateDataFileSet = configuration.intermediateDataFile != null;
   const intermediateDataFile = IntermediateDataFile.readOrDefault(configuration.intermediateDataFile);
   const referenceProvider = new ReferenceProvider(
     intermediateDataFile.getReferencesMap(),
-    configuration.useContextSensitiveReferences ? generateContextSensitiveReference : undefined,
+    configuration.useContextSensitiveReferences ? referenceGeneratorFn : undefined,
   );
   const dataProvider = new DataProvider(isDataSet ? Data.fromInput(configuration.deploymentId) : undefined);
   const templateEngine = new TemplateEngine(referenceProvider, dataProvider);

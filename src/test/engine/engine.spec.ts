@@ -29,7 +29,7 @@ describe('Test template engine', () => {
     const reference3 = uuid.v4();
     const references = [reference3, reference2, reference1];
 
-    const referenceProvider = new ReferenceProvider(new Map<string, ReferenceValue>(), () => references.pop());
+    const referenceProvider = new ReferenceProvider(new Map<string, ReferenceValue>(), () => references.pop()!);
     const engine = new TemplateEngine(referenceProvider, new DataProvider());
 
     expect(engine.newRenderer().parse('default').steps('insertReferences').render('1: $A\n2: $B\n3: $C')).to.equal(
